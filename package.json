@@ -1,0 +1,39 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "nodemon": "^2.0.4",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-livereload-plugin": "^2.3.0",
+    "webpack-node-externals": "^2.5.1"
+  },
+  "scripts": {
+    "start": "webpack --config ./webpack.config.js --watch",
+    "dev": "nodemon --exec babel-node ./server/server-dev.js --ignore client",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdziadkowiec95/chat-app.git"
+  },
+  "author": "Michal Dziadkowiec",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mdziadkowiec95/chat-app/issues"
+  },
+  "homepage": "https://github.com/mdziadkowiec95/chat-app#readme"
+}
