@@ -1,5 +1,8 @@
-const foo = () => {
-  alert('Cool alert');
-};
+import io from 'socket.io-client';
+import { showAlert } from './views/test-view';
 
-document.querySelector('.btn').addEventListener('click', foo);
+const socket = io('http://localhost:3000');
+
+console.log(socket);
+
+document.querySelector('.btn').addEventListener('click', showAlert);
