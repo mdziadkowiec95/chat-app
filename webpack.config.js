@@ -44,10 +44,8 @@ const clientConfig = {
       },
     ],
   },
-  externals: [nodeExternals()],
   plugins: [
     new HtmlWebpackPlugin({
-      // filename: './index.html',
       template: './client/index.html',
     }),
   ],
@@ -67,6 +65,7 @@ const serverConfig = (argv) => ({
     __dirname: false,
     __filename: false,
   },
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
