@@ -2,26 +2,12 @@ import { createServer } from 'http';
 import socketIO from 'socket.io';
 import path from 'path';
 import EVENTS from '../common/socket-events';
-
-// Gloabl state of the application
-const state = {
-  users: [],
-};
-
-function createUser(socketId, userName) {
-  return {
-    socketId,
-    userName,
-  };
-}
-
-function deleteUser(socketId) {
-  state.users = state.users.filter((user) => user.socketId !== socketId);
-}
+import usersRepo from './users-repository';
 
 export const initApp = (app) => {
   const http = createServer(app);
   const io = socketIO(http);
+  const usersRepository = usersRepo.getInstance();
 
   app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/index.html'));
@@ -34,31 +20,45 @@ export const initApp = (app) => {
     };
 
     console.log('a user connected');
-
+    console.log(usersRepository.getUsers());
     socket.on('disconnect', () => {
-      deleteUser(socket.id);
+      usersRepository.deleteUser(socket.id);
       console.log('user disconnected');
     });
 
     socket.on(EVENTS.USER_ADD, (userName) => {
+      userName = userName.trim();
+
       if (userState.isAdded) {
         return socket.emit(EVENTS.USER_EXISTS, { userName: socket.userName });
+      } else if (usersRepository.isUserNameAlreadyTaken(userName)) {
+        return socket.emit(EVENTS.USER_NAME_ALREADY_TAKEN, { userName });
       }
 
       socket.userName = userName;
 
       // Add new user to the list of active users
-      state.users.push(createUser(socket.id, socket.userName));
+      const createdUser = usersRepository.createUser(
+        socket.id,
+        socket.userName
+      );
 
       userState.isAdded = true;
 
-      // echo globally (all clients) that a person has connected
-      socket.emit(EVENTS.USER_JOINED, {
-        userName: socket.userName,
-        numberOfUsers: state.users.length,
-        activeUsers: state.users,
+      // Emit global event with app state details
+      socket.broadcast.emit(EVENTS.USER_JOINED, {
+        numberOfUsers: usersRepository.getNumberOfUsers(),
+        createdUser: createdUser,
       });
-      console.log(socket.userName, state);
+
+      // Emit an event (only to current socket) after current user is logged in
+      socket.emit(EVENTS.USERS_INITIAL_UPDATE, {
+        userName: socket.userName,
+        numberOfUsers: usersRepository.getNumberOfUsers(),
+        activeUsers: usersRepository.getUsersWithoutCurrentClient(socket.id),
+      });
+
+      console.log('users', usersRepository.getState());
     });
   });
 
