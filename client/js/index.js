@@ -2,6 +2,8 @@ import { showAlert } from './views/test-view';
 import EVENTS from '../../common/socket-events';
 import socket from './socket';
 
+import '../scss/main.scss';
+
 let isLoggedIn = false;
 
 const handleAddUser = (e) => {

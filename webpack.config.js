@@ -1,6 +1,7 @@
-// const  webpack from 'webpack';
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const nodeExternals = require('webpack-node-externals');
 
 const clientConfig = {
@@ -19,19 +20,25 @@ const clientConfig = {
         exclude: /node_modules/,
       },
       {
-        use: ['style-loader', 'css-loader'],
-        test: /\.css$/,
-      },
-      {
         test: /\.scss$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: 'css-loader',
+            // options: {
+            //   sourceMap: true,
+            // },
+          },
+          {
+            loader: 'postcss-loader',
             options: {
-              sourceMap: true,
+              plugins: () => [
+                autoprefixer({
+                  grid: 'autoplace',
+                }),
+              ],
             },
           },
           {
@@ -45,6 +52,9 @@ const clientConfig = {
     ],
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'styles.css',
+    }),
     new HtmlWebpackPlugin({
       template: './client/index.html',
     }),

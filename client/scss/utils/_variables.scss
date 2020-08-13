@@ -1,0 +1,29 @@
+$primary: blue;
+
+$breakpoints: (
+  xs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1300px,
+);
+
+$colors: (
+  default-bg: #fafafb,
+  white: #fff,
+  accent: #b09a68,
+  dark: #080709,
+  dark-lighten: #999,
+);
+
+$layers: (
+  nav: 1000,
+  nav-toggler: 1100,
+  card-before: 1,
+  card-label: 10,
+  card-body: 20,
+);
+
+$easings: (
+  easeOutEx: cubic-bezier(0.19, 1, 0.22, 1),
+  easeOutBack: cubic-bezier(0.175, 0.885, 0.32, 1.275),
+);
