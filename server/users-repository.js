@@ -21,7 +21,7 @@ const usersRepository = (function () {
         return user;
       },
       isUserNameAlreadyTaken(userName) {
-        return state.users.find((user) => user.userName === userName);
+        return !!state.users.find((user) => user.userName === userName);
       },
       deleteUser(socketId) {
         state.users = state.users.filter((user) => user.socketId !== socketId);
