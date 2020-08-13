@@ -1,0 +1,11 @@
+@function getColor($colorName) {
+  @return map-get($colors, $colorName);
+}
+
+@function getLayer($layerName) {
+  @return map-get($layers, $colorName);
+}
+
+@function getEasing($easingName) {
+  @return map-get($easings, $easingName);
+}
