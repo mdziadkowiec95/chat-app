@@ -22,7 +22,15 @@ export const initApp = (app) => {
     console.log('a user connected');
     console.log(usersRepository.getUsers());
     socket.on('disconnect', () => {
-      usersRepository.deleteUser(socket.id);
+      if (userState.isAdded) {
+        usersRepository.deleteUser(socket.id);
+
+        // Emit to other users that current user has disconnected
+        socket.broadcast.emit(EVENTS.USER_DISCONNECTED, {
+          socketId: socket.id,
+          userName,
+        });
+      }
       console.log('user disconnected');
     });
 

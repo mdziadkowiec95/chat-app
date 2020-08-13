@@ -27,6 +27,8 @@ const displayActiveUsers = (createdUser) => {
 
 const displayInitialUserList = ({ userName, numberOfUsers, activeUsers }) => {
   document.getElementById('user-name').textContent = userName;
+  document.getElementById('number-of-users').textContent = numberOfUsers;
+
   const list = document.getElementById('active-users');
 
   activeUsers.forEach((user) => list.appendChild(createNewUserItem(user)));
@@ -39,16 +41,29 @@ const handleUserLogIn = (data) => {
 };
 
 const updateActiveUsers = ({ numberOfUsers, createdUser }) => {
-  document.getElementById('number-of-users').textContent = numberOfUsers;
-  displayActiveUsers(createdUser);
+  if (isLoggedIn) {
+    document.getElementById('number-of-users').textContent = numberOfUsers;
+    displayActiveUsers(createdUser);
+  }
+};
+
+const handleUserDisconnect = ({ socketId, userName }) => {
+  const listEl = document.getElementById('active-users');
+  const userEl = listEl.querySelector(`li[data-user-id=${socketId}`);
+
+  if (userEl) listEl.removeChild(userEl);
+
+  // TODO
+  // 1. apply push notification informing that user has disconnected the chat
 };
 
 // Update active users only when current client has already logged in
-if (isLoggedIn) {
-  socket.on(EVENTS.USER_JOINED, updateActiveUsers);
-}
+
+socket.on(EVENTS.USER_JOINED, updateActiveUsers);
 
 socket.on(EVENTS.USERS_INITIAL_UPDATE, handleUserLogIn);
+
+socket.on(EVENTS.USER_DISCONNECTED, handleUserDisconnect);
 
 socket.on(EVENTS.USER_EXISTS, ({ userName }) => {
   alert(`${userName} is already active in the chat!`);
