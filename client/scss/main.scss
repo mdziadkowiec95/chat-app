@@ -9,16 +9,3 @@
 
 // Components
 @import './components/buttons';
-
-body {
-  display: flex;
-  align-items: center;
-  display: grid;
-  box-shadow: 0 0 3px grey;
-  background-color: getColor(dark-lighten);
-  flex: 0 0 auto;
-
-  @include breakpoint(md) {
-    background-color: getColor(accent);
-  }
-}
