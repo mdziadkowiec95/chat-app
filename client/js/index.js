@@ -1,18 +1,12 @@
-import { showAlert } from './views/test-view';
 import EVENTS from '../../common/socket-events';
+import { registerControllers } from './controllers';
 import socket from './socket';
 
 import '../scss/main.scss';
 
+registerControllers(socket);
+
 let isLoggedIn = false;
-
-const handleAddUser = (e) => {
-  e.preventDefault();
-
-  const userName = document.querySelector('form > input').value;
-  console.log(userName);
-  socket.emit(EVENTS.USER_ADD, userName);
-};
 
 const createNewUserItem = (user) => {
   const el = document.createElement('li');
@@ -63,8 +57,6 @@ const handleUserDisconnect = ({ socketId, userName }) => {
 
 socket.on(EVENTS.USER_JOINED, updateActiveUsers);
 
-socket.on(EVENTS.USERS_INITIAL_UPDATE, handleUserLogIn);
-
 socket.on(EVENTS.USER_DISCONNECTED, handleUserDisconnect);
 
 socket.on(EVENTS.USER_EXISTS, ({ userName }) => {
@@ -74,6 +66,3 @@ socket.on(EVENTS.USER_EXISTS, ({ userName }) => {
 socket.on(EVENTS.USER_NAME_ALREADY_TAKEN, ({ userName }) => {
   alert(`Name "${userName}" is already taken!`);
 });
-
-document.querySelector('form').addEventListener('submit', handleAddUser);
-document.querySelector('.btn').addEventListener('click', showAlert);
