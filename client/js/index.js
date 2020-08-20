@@ -4,7 +4,7 @@ import socket from './socket';
 
 import '../scss/main.scss';
 
-registerControllers(socket);
+registerControllers();
 
 let isLoggedIn = false;
 

@@ -1,7 +1,7 @@
 import socket from '../socket';
 import EVENTS from '../../../common/socket-events';
 
-export const UserModel = (function () {
+function createUserModel(socket) {
   const state = {
     isLoggedIn: false,
   };
@@ -17,5 +17,10 @@ export const UserModel = (function () {
     loginUser() {
       _setIsLoggedIn(true);
     },
+    isUserLoggedIn() {
+      return state.isLoggedIn;
+    },
   };
-})();
+}
+
+export const UserModel = createUserModel(socket);
