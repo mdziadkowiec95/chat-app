@@ -17,6 +17,7 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.1",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "jest": "^26.2.2",
     "mini-css-extract-plugin": "^0.10.0",
     "nodemon": "^2.0.4",
@@ -35,7 +36,13 @@
     "dev": "nodemon --exec babel-node ./server/server-dev.js --ignore client",
     "build": "webpack --mode production",
     "test": "jest",
-    "test-server": "jest ./server"
+    "test-client": "jest ./test/client",
+    "test-server": "jest ./test/server"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   },
   "repository": {
     "type": "git",

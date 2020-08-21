@@ -4,7 +4,7 @@ function removeAllUsers(users, deleteUserFn) {
   users.forEach((user) => deleteUserFn(user.socketId));
 }
 
-describe('usersRepository', () => {
+describe('[server] usersRepository', () => {
   let usersRepo;
 
   beforeEach(() => {
