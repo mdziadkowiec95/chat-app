@@ -22,6 +22,7 @@ export const initApp = (app) => {
     socket.on('disconnect', socketController.handleDisconnect);
 
     // Setup adding new user listener
+    socket.on(EVENTS.USER_PERSIST_ATTEMPT, socketController.getPersistedUser);
     socket.on(EVENTS.USER_ADD, socketController.handleUserAdd);
   });
 

@@ -13,6 +13,9 @@ export const UserModel = (socket) => {
     handleAddUser(userName) {
       socket.emit(EVENTS.USER_ADD, userName);
     },
+    handlePersistUser(userName) {
+      socket.emit(EVENTS.USER_PERSIST_ATTEMPT, userName);
+    },
     loginUser() {
       _setIsLoggedIn(true);
     },
