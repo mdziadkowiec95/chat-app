@@ -1,9 +1,10 @@
 import { Button } from '../components/Button';
 import { elements } from './elements';
+import { removeElement } from '../helpers/DOM';
+import { selectors } from './selectors';
 
-const renderNewUserItem = (user) => `
-    <li data-user-id="${user.socketId}">${user.userName}</li>
-  `;
+const renderNewUserItem = (user) =>
+  `<li data-user-id="${user.socketId}">${user.userName}</li>`;
 
 const displayBaseInfo = (userName, numberOfUsers) => {
   const html = `
@@ -11,7 +12,7 @@ const displayBaseInfo = (userName, numberOfUsers) => {
     <p>Users online: ${numberOfUsers}</p>
 
     ${Button({
-      text: 'Sample button',
+      text: 'Sample buttonfs',
       tag: 'unique-btn123',
       attrs: {
         id: '12312414',
@@ -31,9 +32,11 @@ const displayActiveUsers = (activeUsers) => {
   }
 };
 
-export const displayInitialInfo = (userName, numberOfUsers, activeUsers) => {
+export const handleUserLogin = (userName, numberOfUsers, activeUsers) => {
+  removeElement(elements.LOGIN_FORM);
   displayBaseInfo(userName, numberOfUsers);
   displayActiveUsers(activeUsers);
 };
 
-export const getUserName = () => document.querySelector('form > input').value;
+export const getUserName = () =>
+  document.querySelector(selectors.LOGIN_INPUT).value;

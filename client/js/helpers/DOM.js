@@ -13,3 +13,5 @@ export const parseAttributes = (attrs) => {
 
   return parsedAttrs ? ` ${parsedAttrs}` : '';
 };
+
+export const removeElement = (el) => el.parentNode.removeChild(el);
