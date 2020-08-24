@@ -12,7 +12,7 @@ function _handleAddUser(e) {
 
 function _handleUserLogIn({ userName, numberOfUsers, activeUsers }) {
   UserModel.loginUser();
-  userView.displayInitialInfo(userName, numberOfUsers, activeUsers);
+  userView.handleUserLogin(userName, numberOfUsers, activeUsers);
 }
 
 // Socket and Event listeners init functions
