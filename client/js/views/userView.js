@@ -4,25 +4,25 @@ import { removeElement } from '../helpers/DOM';
 import { selectors } from './selectors';
 
 const renderNewUserItem = (user) =>
-  `<li data-user-id="${user.socketId}">${user.userName}</li>`;
+  `<li data-user-id="${user.userId}">${user.userName}</li>`;
 
 const displayBaseInfo = (userName, numberOfUsers) => {
   const html = `
     <p>Welcome, ${userName}</p>
-    <p>Users online: ${numberOfUsers}</p>
+    <p id="number-of-users">Users online: ${numberOfUsers}</p>
 
     ${Button({
       text: 'Sample buttonfs',
       tag: 'unique-btn123',
       attrs: {
-        id: '12312414',
+        id: 'get-users',
         other: '14124',
         disabled: null,
       },
     })}
   `;
 
-  elements.BASE_CHAT_INFO.insertAdjacentHTML('afterbegin', html);
+  elements.BASE_CHAT_INFO.innerHTML = html;
 };
 
 const displayActiveUsers = (activeUsers) => {

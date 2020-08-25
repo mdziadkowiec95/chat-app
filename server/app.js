@@ -16,10 +16,19 @@ export const initApp = (app) => {
 
   io.on('connect', (socket) => {
     console.log('a new user (socket) connected');
-    const socketController = socketControllerFactory(socket, usersRepository);
+    const socketController = socketControllerFactory(
+      io,
+      socket,
+      usersRepository
+    );
 
     // Setup socket disconnection listener
     socket.on('disconnect', socketController.handleDisconnect);
+
+    // Debug user list
+    socket.on('get-users', () => {
+      socket.emit('get-users-return', usersRepository.getUsers());
+    });
 
     // Setup adding new user listener
     socket.on(EVENTS.USER_PERSIST_ATTEMPT, socketController.getPersistedUser);
