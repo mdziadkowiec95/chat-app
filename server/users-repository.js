@@ -2,38 +2,62 @@ const usersRepository = (function () {
   let instance;
 
   function createInstance() {
-    const state = {
-      users: [],
-    };
+    const users = {};
 
     return {
-      getState() {
-        return state;
+      createUser(socketId, userName, userId) {
+        if (!users[userId]) {
+          users[userId] = {
+            userId,
+            userName,
+            sockets: [socketId],
+          };
+          return users[userId];
+        } else {
+          throw new Error(
+            `User "${userName}" already exists. Socket ID: ${socketId}, User ID: ${userId}`
+          );
+        }
       },
-      createUser(socketId, userName) {
-        const user = {
-          socketId,
-          userName,
-        };
-
-        state.users.push(user);
-
-        return user;
+      isUserActive(userId) {
+        return !!users[userId];
+      },
+      updateActiveUserAndReturn(userId, socketId) {
+        users[userId].sockets.push(socketId);
+        return users[userId];
       },
       isUserNameAlreadyTaken(userName) {
-        return !!state.users.find((user) => user.userName === userName);
+        return !!Object.values(users).find(
+          (user) => user.userName === userName
+        );
       },
-      deleteUser(socketId) {
-        state.users = state.users.filter((user) => user.socketId !== socketId);
+      deleteSocket(userId, socketId) {
+        if (users[userId]) {
+          console.log('sockets BEFORE -> ', users[userId].sockets);
+          users[userId].sockets = users[userId].sockets.filter(
+            (socket) => socket !== socketId
+          );
+          console.log('sockets AFTER -> ', users[userId].sockets);
+          if (!users[userId].sockets.length) delete users[userId];
+        }
       },
       getUsers() {
-        return state.users;
+        return users;
       },
-      getUsersWithoutCurrentClient(socketId) {
-        return state.users.filter((user) => user.socketId !== socketId);
+      getUsersWithoutCurrentClient(userId) {
+        const otherUsers = { ...users };
+
+        if (otherUsers[userId]) delete otherUsers[userId];
+
+        return Object.values(otherUsers);
       },
       getNumberOfUsers() {
-        return state.users.length;
+        return Object.keys(users).length;
+      },
+      emitToUser(userId, eventName, eventData) {
+        users[userId].sockets.forEach((socketId) => {
+          socket.emit(eventName, eventData);
+        });
       },
     };
   }
